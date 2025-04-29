@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Prediction History{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Your Prediction History</h2>
+    {% if predictions %}
+        <div class="list-group">
+            {% for prediction in predictions %}
+                <div class="list-group-item d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='uploads/' + prediction.filename) }}" class="me-3" style="height: 64px; width: 64px; object-fit: cover;" alt="Prediction">
+                    <div>
+                        <h5 class="mb-1">{{ prediction.predicted_class }}</h5>
+                        <p class="mb-1 text-muted">
+                            {{ prediction.timestamp.strftime('%Y-%m-%d %H:%M') }}<br>
+                            Confidence: {{ (prediction.confidence * 100) | round(2) }}%
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">You have no prediction history yet.</p>
+    {% endif %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-4">Back to Dashboard</a>
+</div>
+{% endblock %}
